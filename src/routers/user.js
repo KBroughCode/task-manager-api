@@ -29,7 +29,7 @@ router.post("/users/login", async (req, res) => {
       req.body.email,
       req.body.password
     );
-    //toekn uses the user instance of User as we don't want to run this against the User Model as a whole, just the individual
+    //token uses the user instance of User as we don't want to run this against the User Model as a whole, just the individual
     const token = await user.generateAuthToken();
 
     res.send({ user, token });
@@ -91,7 +91,8 @@ router.patch("/users/me", auth, async (req, res) => {
 router.delete("/users/me", auth, async (req, res) => {
   try {
     await req.user.remove();
-    sendCancellationEmail(user.email, user.name);
+    console.log("Getting there");
+    sendCancellationEmail(req.user.email, req.user.name);
     res.send(req.user);
   } catch (e) {
     res.status(500).send();
